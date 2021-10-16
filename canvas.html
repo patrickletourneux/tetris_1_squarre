@@ -1,0 +1,31 @@
+<!-- Patrick 10/2021 -->
+
+<!DOCTYPE html>
+<!-- <html lang="en"> -->
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <link rel="stylesheet" type="text/css" href="assets/canvas1.css" />
+  <title>Tetris in progress</title>
+</head>
+<body id="body">
+  <div id="global">
+    <h1>Tetris in progress </br>begin with only one squarre</h1>
+    <div id="boutonshaut">
+     <div class="btn" id="start" onclick="move('down')">start/continue </div>
+     <div class="btn" id="restart" onclick="restart()">restart </div>
+     <div class="btn" id="pause" onclick="pause()">pause</div>
+    </div>
+    <!-- heigt is 525 , 550 is just for developpement -->
+    <canvas id="canvas_1" name="tetris" width="300" height="525"></canvas>  
+    <div id="boutonsbas">
+      <div class="btn" id="moveLeft" onclick="move('left')">bouton move Left </br> <== </div>
+      <div class="btn" id="moveDownQuick" onclick="move('downquick')">bouton move Down quick</br>V</div>
+      <div class="btn" id="changeColor" onclick="changeColor()">change Color</div>
+      <div class="btn" id="moveRight" onclick="move('right')">bouton move Right </br> ==></div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="assets/canvas1.js"></script>
+</body>
