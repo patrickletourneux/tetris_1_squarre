@@ -1,5 +1,7 @@
 // Patrick 10/2021
 
+// still a bug to destroyLineFixed if all squarre are added during play
+
 var canvas =
   /** @type {HTMLCanvasElement} */ document.getElementById("canvas_1"); // for intellisense VScode
 console.log(canvas);
@@ -11,12 +13,18 @@ var canvas_height = canvas.height;
 console.log("canvas_height:", canvas_height);
 var number_squarre_width = 12;
 squarre_width = canvas_width / number_squarre_width;
-
+var scoreValue = 0;
+var score = document.getElementById("score");
 var animationID = 0;
 var autorisedMovement = true;
 
 var Position_X = canvas.width / 2 - squarre_width;
 var Position_Y = 0;
+
+var yPositionToTest = [
+  25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350, 375, 400,
+  425, 450, 475, 500,
+]; // for function testLineComplete
 
 var allSquarre = []; // creation of all cases
 var compteur = 0;
@@ -34,25 +42,37 @@ for (let i = 0; i < 12; i++) {
 console.log("allSquarre:", allSquarre);
 
 var squarreFixedBottom = []; // to initialise a zone at bottom with a line of squarre non visible and 4 points for each squarre
-var compteur = 0;
-for (let i = 0; i < 12; i++) {
-  for (let j = 21; j < 22; j++) {
-    compteur++;
-    squarreFixedBottom.push([
-      i * squarre_width,
-      j * squarre_width,
-      i * squarre_width,
-      j * squarre_width,
-      i * squarre_width + squarre_width,
-      j * squarre_width,
-      i * squarre_width + squarre_width,
-      j * squarre_width + squarre_width,
-      i * squarre_width,
-      j * squarre_width + squarre_width,
-    ]);
+function initSquarreFixedBottom() {
+  squarreFixedBottom = [];
+  compteur = 0;
+  for (let i = 0; i < 12; i++) {
+    // good values
+    for (let j = 21; j < 22; j++) {
+      // good values
+      // for (let i = 0; i < 12; i++) {
+      //   // debugging value
+      //   for (let j = 19; j < 22; j++) {
+      //     // debugging value
+      if ((j == 20 && i == 11) || (j == 19 && i == 11)) {
+      } else {
+        compteur++;
+        squarreFixedBottom.push([
+          i * squarre_width,
+          j * squarre_width,
+          i * squarre_width,
+          j * squarre_width,
+          i * squarre_width + squarre_width,
+          j * squarre_width,
+          i * squarre_width + squarre_width,
+          j * squarre_width + squarre_width,
+          i * squarre_width,
+          j * squarre_width + squarre_width,
+        ]);
+      }
+    }
   }
 }
-console.log("squarreFixedBottom:", squarreFixedBottom);
+// console.log("squarreFixedBottom:", squarreFixedBottom);
 
 class formInMovement {
   constructor(Position_X, Position_Y) {
@@ -91,16 +111,13 @@ class formInMovement {
         myContext.rect(squarre[0], squarre[1], squarre_width, squarre_width);
         myContext.fill();
         myContext.stroke();
-        drawPoint(myContext, squarre[2], squarre[3], "rgb(255,0,0)");
-        drawPoint(myContext, squarre[4], squarre[5], "rgb(255,0,0)");
-        drawPoint(myContext, squarre[6], squarre[7], "rgb(255,0,0)");
-        drawPoint(myContext, squarre[8], squarre[9], "rgb(255,0,0)");
       }
     };
   }
 }
 
 var form = new formInMovement(Position_X, Position_Y);
+initSquarreFixedBottom();
 drawAllSquarre();
 drawsquarreFixedBottom();
 
@@ -115,19 +132,16 @@ function drawAllSquarre() {
 }
 
 function drawsquarreFixedBottom() {
+  // myContext.clearRect(0, 0, 300, 525);
   myContext.lineWidth = "2";
   myContext.strokeStyle = "blue";
   for (let squarre of squarreFixedBottom) {
     myContext.beginPath();
     myContext.rect(squarre[0], squarre[1], squarre_width, squarre_width);
-    myContext.fillStyle ="red";
+    myContext.fillStyle = "red";
     myContext.fill();
     myContext.stroke();
-    drawPoint(myContext, squarre[2], squarre[3], "rgb(255,255,0)");
-    drawPoint(myContext, squarre[4], squarre[5], "rgb(255,255,0)");
-    drawPoint(myContext, squarre[6], squarre[7], "rgb(255,255,0)");
-    drawPoint(myContext, squarre[8], squarre[9], "rgb(255,255,0)");
-    myContext.fillStyle ="green";
+    myContext.fillStyle = "green";
   }
 }
 
@@ -157,13 +171,13 @@ function move(direction) {
   myContext.clearRect(0, 0, 300, 525);
   // drawAllSquarre();
   drawLine(myContext, canvas_width / 2, 0, canvas_width / 2, canvas_height);
-  drawsquarreFixedBottom()
+  drawsquarreFixedBottom();
 
   if (direction == "down") {
     console.log("move " + direction);
     form.Position_Y += 1;
   } else if (direction == "downquick") {
-    form.Position_Y += 100;
+    form.Position_Y += 25;
     console.log("move " + direction);
   } else if (direction == "left") {
     form.Position_X -= squarre_width;
@@ -184,15 +198,16 @@ function move(direction) {
   }
 
   form.drawSquarres();
-  // here i must test contact
   if (form.Position_Y % 25 == 0) {
     console.log("form.Position_Y:", form.Position_Y);
     testContact();
+    testLineComplete();
   }
   animationID = window.requestAnimationFrame(move);
 }
 
 function testContact() {
+  // test contact between form in movement and squarrefixedbottom
   for (let squarrefixed of squarreFixedBottom) {
     // console.log('squarrefixed '+squarrefixed)
     for (let squarreInMove of form.squarres) {
@@ -202,17 +217,65 @@ function testContact() {
         squarrefixed[4] == squarreInMove[6] &&
         squarrefixed[5] == squarreInMove[7]
       ) {
-        // console.log('squarreInMove[9]:', squarreInMove[9])
-        // console.log('squarrefixed[3]:', squarrefixed[3])
-        // console.log('squarrefixed[2]:', squarrefixed[2])
-        // console.log('squarreInMove[8]:', squarreInMove[8])
-        console.log("Contact segment horizontal on stoppe le squarre !!---------------------------------------------------------");
-        squarreFixedBottom.push(squarreInMove)
+        console.log(
+          "Contact segment horizontal on stoppe le squarre !!---------------------------------------------------------"
+        );
+        squarreFixedBottom.push(squarreInMove);
         form.Position_X = canvas.width / 2 - squarre_width;
         form.Position_Y = 0;
+        scoreValue += 10;
+        score.innerHTML = scoreValue;
       }
     }
   }
+}
+
+function testLineComplete() {
+  // console.log("testLineComplete:");
+  for (yPosition of yPositionToTest) {
+    var compteur2 = 0;
+    for (let squarrefixed of squarreFixedBottom) {
+      if (squarrefixed[1] == yPosition) {
+        compteur2 += 1;
+      }
+    }
+    if (compteur2 == 12) {
+      console.log(
+        "ligne complete yposition " + yPosition + "------------------------"
+      );
+      destroyLineFixed(yPosition);
+      scoreValue += 100;
+      score.innerHTML = scoreValue;
+      updateSquarreFixedBottom(yPosition);
+    }
+  }
+}
+
+function destroyLineFixed(yOrigineSquarre) {
+  var l = 0;
+  var tempFixedBottom = [];
+  for (let squarreFixed of squarreFixedBottom) {
+    if (squarreFixed[1] != yOrigineSquarre) {
+      tempFixedBottom.push(squarreFixed);
+      console.log("squarreFixed:", squarreFixed);
+    }
+  }
+  squarreFixedBottom = tempFixedBottom;
+}
+
+function updateSquarreFixedBottom(yPositionlinedestroyed) {
+  // after destroyLineFixed
+  for (let squarreFixed of squarreFixedBottom) {
+    if (squarreFixed[1] < yPositionlinedestroyed) {
+      squarreFixed[1] += squarre_width;
+      squarreFixed[3] += squarre_width;
+      squarreFixed[5] += squarre_width;
+      squarreFixed[7] += squarre_width;
+      squarreFixed[9] += squarre_width;
+    }
+  }
+  drawsquarreFixedBottom();
+  alert("end updateSquarreFixedBottom");
 }
 
 function start() {
@@ -221,7 +284,12 @@ function start() {
 }
 
 function restart() {
+  console.log("restart:");
   window.cancelAnimationFrame(animationID);
+  scoreValue = 0;
+  initSquarreFixedBottom();
+  drawAllSquarre();
+  drawsquarreFixedBottom();
   autorisedMovement = true;
   form.Position_X = canvas.width / 2 - squarre_width;
   form.Position_Y = 0;
