@@ -1,7 +1,5 @@
 // Patrick 10/2021
 
-// still a bug to destroyLineFixed if all squarre are added during play
-
 var canvas =
   /** @type {HTMLCanvasElement} */ document.getElementById("canvas_1"); // for intellisense VScode
 console.log(canvas);
@@ -111,6 +109,8 @@ class formInMovement {
         myContext.rect(squarre[0], squarre[1], squarre_width, squarre_width);
         myContext.fill();
         myContext.stroke();
+      drawLine(myContext, this.Position_X, this.Position_Y, this.Position_X, 525)
+      drawLine(myContext, this.Position_X + squarre_width, this.Position_Y, this.Position_X + squarre_width, 525)
       }
     };
   }
@@ -169,16 +169,17 @@ function move(direction) {
   }
   window.cancelAnimationFrame(animationID); //need to cancel the animation to avoid acceleration if start several times
   myContext.clearRect(0, 0, 300, 525);
-  // drawAllSquarre();
-  drawLine(myContext, canvas_width / 2, 0, canvas_width / 2, canvas_height);
+  // drawLine(myContext, canvas_width / 2, 0, canvas_width / 2, canvas_height);
   drawsquarreFixedBottom();
-
+  
   if (direction == "down") {
     console.log("move " + direction);
     form.Position_Y += 1;
   } else if (direction == "downquick") {
-    form.Position_Y += 25;
+    // findClosestFixSquaSameY(form.Position_X);
     console.log("move " + direction);
+    form.Position_Y = Math.min( ...findClosestFixSquaSameY(form.Position_X))-squarre_width;  // need to understand this line
+    form.drawSquarres();
   } else if (direction == "left") {
     form.Position_X -= squarre_width;
     console.log("move " + direction);
@@ -206,6 +207,19 @@ function move(direction) {
   animationID = window.requestAnimationFrame(move);
 }
 
+function findClosestFixSquaSameY(Xposition) {    // le premier squarre trouve est forcément le plus pret de la forme en mouvement
+  console.log('findClosestFixSquaSameY:----------------------')
+  var YsquarreFixSameX = [];
+  for (squarreFix of squarreFixedBottom) {
+    if (squarreFix[0] == Xposition) {
+      YsquarreFixSameX.unshift(squarreFix[1]);
+      console.log('squarreFix[1]:', squarreFix[1])
+      console.log("YsquarreFixSameX:", YsquarreFixSameX);  
+    }
+  }
+  return YsquarreFixSameX
+}
+
 function testContact() {
   // test contact between form in movement and squarrefixedbottom
   for (let squarrefixed of squarreFixedBottom) {
@@ -220,7 +234,9 @@ function testContact() {
         console.log(
           "Contact segment horizontal on stoppe le squarre !!---------------------------------------------------------"
         );
+        console.log('squarreInMove:', squarreInMove)
         squarreFixedBottom.push(squarreInMove);
+        console.log('squarreFixedBottom:', squarreFixedBottom)
         form.Position_X = canvas.width / 2 - squarre_width;
         form.Position_Y = 0;
         scoreValue += 10;
@@ -275,7 +291,7 @@ function updateSquarreFixedBottom(yPositionlinedestroyed) {
     }
   }
   drawsquarreFixedBottom();
-  alert("end updateSquarreFixedBottom");
+  // alert("end updateSquarreFixedBottom");
 }
 
 function start() {
