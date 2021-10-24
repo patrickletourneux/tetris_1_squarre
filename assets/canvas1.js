@@ -191,7 +191,7 @@ function move(direction) {
     // findClosestFixSquaSameY(form.Position_X);
     console.log("move " + direction);
     form.Position_Y =
-      Math.min(...findClosestFixSquaSameY(form.Position_X)) - squarre_width; // need to understand this line
+    Math.min(...findClosestFixSquaSameY(form.Position_X)) - squarre_width; // need to understand this line
     form.drawSquarres();
   } else if (direction == "left") {
     form.Position_X -= squarre_width;
@@ -210,7 +210,7 @@ function move(direction) {
   if (form.Position_X + squarre_width > canvas_width) {
     form.Position_X = canvas_width - squarre_width;
   }
-
+  
   form.drawSquarres();
   if (form.Position_Y % 25 == 0) {
     console.log("form.Position_Y:", form.Position_Y);
@@ -218,6 +218,7 @@ function move(direction) {
     testLineComplete();
   }
   animationID = window.requestAnimationFrame(move);
+  console.log('animationID  '+animationID)
 }
 
 function findClosestFixSquaSameY(Xposition) {
@@ -324,7 +325,6 @@ function start() {
 
 function restart() {
   console.log("restart:");
-  window.cancelAnimationFrame(animationID);
   scoreValue = 0;
   myContext.clearRect(0, 0, 300, 525);
   initSquarreFixedBottom();
