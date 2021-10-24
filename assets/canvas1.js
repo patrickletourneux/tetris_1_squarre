@@ -250,7 +250,10 @@ function testContact() {
         );
         if (form.Position_Y == 50) {
           console.log("vous avez PERDU !!!");
-          alert("vous avez perdu");
+          // myContext.font='bold italic 20px verdana'
+          // myContext.StrokeText('-----END you lost--------------',100,100)
+
+          alert("vous avez perdu, score "+ scoreValue);
           restart();
           return;
         }
