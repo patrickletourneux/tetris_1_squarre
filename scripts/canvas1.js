@@ -326,6 +326,7 @@ function start() {
 function restart() {
   console.log("restart:");
   scoreValue = 0;
+  score.innerHTML = scoreValue;
   myContext.clearRect(0, 0, 300, 525);
   initSquarreFixedBottom();
   drawAllSquarre();
