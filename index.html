@@ -12,20 +12,22 @@
 <body id="body">
   <div id="global">
     <h1>Tetris in progress </br>begin with only one squarre</h1>
-    <div id="boutonshaut">
-     <div class="btn" id="start" onclick="move('down')">start/continue </div>
+    <div class="ligne-bouton" id="boutonshaut">
+     <div class="btn" id="start" onclick="move('down')">start <br> continue </div>
      <div class="btn" id="restart" onclick="restart()">restart </div>
      <div class="btn" id="pause" onclick="pause()">pause</div>
-     <div class="btn" id="scoreid">score
-      <p id='score'>00000</p>
-     </div>
+     <div class="btn" id="changeColor" onclick="changeColor()">change Color</div>
     </div>
-    <!-- heigt is 525 , 550 is just for developpement -->
-    <canvas id="canvas_1" name="tetris" width="300" height="525"></canvas>  
-    <div id="boutonsbas">
+    <div id="ligne-canvas-score">
+      <!-- heigt is 525 , 550 is just for developpement -->
+      <canvas id="canvas_1" name="tetris" width="300" height="525"></canvas>  
+      <div class="btn" id="scoreid">score
+        <p id='score'>00000</p>
+      </div>
+    </div>
+    <div class="ligne-bouton" id="boutonsbas">
       <div class="btn" id="moveLeft" onclick="move('left')">bouton move Left </br> <== </div>
       <div class="btn" id="moveDownQuick" onclick="move('downquick')">bouton move Down quick</br>V</div>
-      <div class="btn" id="changeColor" onclick="changeColor()">change Color</div>
       <div class="btn" id="moveRight" onclick="move('right')">bouton move Right </br> ==></div>
     </div>
   </div>

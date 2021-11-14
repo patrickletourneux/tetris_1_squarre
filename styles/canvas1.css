@@ -18,12 +18,19 @@
 #canvas_1 {
   background-color: white;
   border: 1px solid black;
-  height: 500;
+  height: 500px;
   margin: 1rem;
 }
 
-#boutonsbas,#boutonshaut {
+.ligne-bouton{
   display: flex;
+  justify-content:center;
+
+}
+
+#boutonsbas :hover,#boutonshaut :hover{
+  background-color: black;
+  color: red;
 }
 
 .btn {
@@ -31,11 +38,28 @@
   color: white;
   text-align: center;
   border-radius: 5px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0.5rem;
   width: 100px;
-  height: 70px;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 #score {
   color: rgb(0, 255, 21);
+}
+
+#start , #scoreid{
+  font-size: 1.5rem;
+  border: black 5px solid;
+}
+
+#ligne-canvas-score{
+  display: flex;
+  justify-content:space-evenly ;
+  align-items: center;
+}
+
+#scoreid{
+  height: 100px;
 }
