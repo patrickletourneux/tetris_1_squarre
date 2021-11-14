@@ -146,7 +146,7 @@ function drawAllSquarre() {
 function drawsquarreFixedBottom() {
   // myContext.clearRect(0, 0, 300, 525);
   myContext.lineWidth = "2";
-  myContext.strokeStyle = "blue";
+  myContext.strokeStyle = "black";
   for (let squarre of squarreFixedBottom) {
     myContext.beginPath();
     myContext.rect(squarre[0], squarre[1], squarre_width, squarre_width);
