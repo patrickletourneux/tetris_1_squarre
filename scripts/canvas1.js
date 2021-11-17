@@ -264,6 +264,7 @@ function testContact() {
         form.Position_X = canvas.width / 2 - squarre_width;
         form.Position_Y = 0;
         scoreValue += 10;
+        document.getElementById("kaboum").style.color = "rgb(68, 68, 68)";
         score.innerHTML = scoreValue;
       }
     }
@@ -285,6 +286,7 @@ function testLineComplete() {
       );
       destroyLineFixed(yPosition);
       scoreValue += 100;
+      document.getElementById("kaboum").style.color = "red";
       score.innerHTML = scoreValue;
       updateSquarreFixedBottom(yPosition);
     }
@@ -335,6 +337,7 @@ function restart() {
   // autorisedMovement = true;
   form.Position_X = canvas.width / 2 - squarre_width;
   form.Position_Y = 0;
+  document.getElementById("kaboum").style.color = "rgb(68, 68, 68)";
   // form.drawSquarres();
   // move();
 }

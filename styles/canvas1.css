@@ -61,5 +61,13 @@
 }
 
 #scoreid{
-  height: 100px;
+  height: 200px;
+}
+
+#kaboum{
+  transform:rotate(-45deg);
+  color: rgb(68, 68, 68);
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
