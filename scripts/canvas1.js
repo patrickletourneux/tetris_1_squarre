@@ -325,17 +325,18 @@ function start() {
 
 function restart() {
   console.log("restart:");
+  window.cancelAnimationFrame(animationID);
   scoreValue = 0;
   score.innerHTML = scoreValue;
   myContext.clearRect(0, 0, 300, 525);
   initSquarreFixedBottom();
   drawAllSquarre();
   drawsquarreFixedBottom();
-  autorisedMovement = true;
+  // autorisedMovement = true;
   form.Position_X = canvas.width / 2 - squarre_width;
   form.Position_Y = 0;
-  form.drawSquarres();
-  move();
+  // form.drawSquarres();
+  // move();
 }
 
 function pause() {
