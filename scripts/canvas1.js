@@ -191,7 +191,7 @@ function move(direction) {
     // findClosestFixSquaSameY(form.Position_X);
     console.log("move " + direction);
     form.Position_Y =
-    Math.min(...findClosestFixSquaSameY(form.Position_X)) - squarre_width; // need to understand this line
+      Math.min(...findClosestFixSquaSameY(form.Position_X)) - squarre_width; // need to understand this line
     form.drawSquarres();
   } else if (direction == "left") {
     form.Position_X -= squarre_width;
@@ -210,15 +210,19 @@ function move(direction) {
   if (form.Position_X + squarre_width > canvas_width) {
     form.Position_X = canvas_width - squarre_width;
   }
-  
+  var gameOver;
   form.drawSquarres();
   if (form.Position_Y % 25 == 0) {
     console.log("form.Position_Y:", form.Position_Y);
-    testContact();
+    gameOver = testContact(); //gameOver prend la valeur "gameOver" si c est fin de partie
     testLineComplete();
   }
-  animationID = window.requestAnimationFrame(move);
-  console.log('animationID  '+animationID)
+  if (gameOver == "gameOver") {
+    // pour stopper l animation si c est fin de partie pour eviter que la  partie recommence automatiquement
+  } else {
+    animationID = window.requestAnimationFrame(move);
+    console.log("animationID  " + animationID);
+  }
 }
 
 function findClosestFixSquaSameY(Xposition) {
@@ -254,9 +258,9 @@ function testContact() {
           // myContext.font='bold italic 20px verdana'
           // myContext.StrokeText('-----END you lost--------------',100,100)
 
-          alert("vous avez perdu, score "+ scoreValue);
+          alert("vous avez perdu, score " + scoreValue);
           restart();
-          return;
+          return "gameOver";
         }
         console.log("squarreInMove:", squarreInMove);
         squarreFixedBottom.push(squarreInMove);
